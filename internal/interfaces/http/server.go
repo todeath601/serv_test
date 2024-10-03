@@ -2,18 +2,21 @@ package http
 
 import (
 	"fmt"
-	"net/http"
-	"strings"
+	"time"
 )
 
-func GetReq(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusOK)
-	fmt.Fprintln(w, "OK")
-}
+func StartServer() {
+	s := &Server{
+		Host:         "localhost",
+		Port:         ":8080",
+		ReadTimeout:  10 * time.Second,
+		WriteTimeout: 10 * time.Second,
+	}
 
-func PostName(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusOK)
-	name := strings.TrimPrefix(r.URL.Path, "/api/ping/")
+	r := NewRouter()
 
-	fmt.Fprintf(w, "OK %s\n", name)
+	fmt.Println("Startin server on port :8080...")
+	if err := s.ConfigServer(r); err != nil {
+		fmt.Println("Server failed to start")
+	}
 }
