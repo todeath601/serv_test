@@ -1,7 +1,20 @@
 package main
 
-import "mods/internal/interfaces/http"
+import (
+	"mods/internal/interfaces/config"
+	"mods/internal/interfaces/http"
+)
 
 func main() {
-	http.StartServer()
+
+	c, err := config.LoadConfig()
+	if err != nil {
+		panic(err)
+	}
+
+	http.StartServer(c)
+
+	alertService := NewAlertService(DicscordChat{}, chatBandwidth{})
+	alertService.Start()
+
 }
