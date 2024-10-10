@@ -1,4 +1,4 @@
-package http
+package router
 
 import (
 	"fmt"
@@ -17,7 +17,7 @@ type Server struct {
 }
 
 func (s *Server) ConfigServer(handler http.Handler) error {
-	address := fmt.Sprintf("%s:%d", s.Host, s.Port)
+	address := fmt.Sprintf("%s:%d \n", s.Host, s.Port)
 	server := &http.Server{
 		Addr:         address,
 		Handler:      handler,
@@ -28,7 +28,7 @@ func (s *Server) ConfigServer(handler http.Handler) error {
 	return server.ListenAndServe()
 }
 
-func NewHandler() chi.Router {
+func BuildRouter() chi.Router {
 	h := handlers.NewHandler()
 	return h.Router
 }
